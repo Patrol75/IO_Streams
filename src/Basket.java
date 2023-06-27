@@ -29,44 +29,29 @@ public class Basket {
         }
     }
 
-    public void saveTxt(File textFile) throws IOException {
-        try (PrintWriter out = new PrintWriter(textFile)) {
-            for (String e : products) {
-                out.print(e + " ");
-            }
-            out.println();
-            for (int e : price) {
-                out.print(e + " ");
-            }
-            out.println();
-            for (int e : cart)
-                out.print(e + " ");
+    public void saveBin(File binFile) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(binFile);
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(products);
+            oos.writeObject(price);
+            oos.writeObject(cart);
         }
     }
 
-    public static Basket loadFromTxtFile(File textFile) throws IOException {
-        try (FileReader fr = new FileReader(textFile)) {
-            BufferedReader reader = new BufferedReader(fr);
-            String line = reader.readLine();
-            String[] products = line.split(" ");
-            line = reader.readLine();
-            String[] stringPrice = line.split(" ");
-            int[] price = new int[stringPrice.length];
-            for (int i = 0; i < stringPrice.length; i++) {
-                price[i] = Integer.parseInt(stringPrice[i]);
-            }
-            line = reader.readLine();
-            String[] stringCart = line.split(" ");
-            int[] cart = new int[stringCart.length];
-            for (int i = 0; i < stringCart.length; i++) {
-                cart[i] = Integer.parseInt(stringCart[i]);
-            }
+    public static Basket loadFromBinFile(File binFile) throws IOException {
+        try (FileInputStream fis = new FileInputStream(binFile);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            String[] products = (String[]) ois.readObject();
+            int[] price = (int[]) ois.readObject();
+            int[] cart = (int[]) ois.readObject();
             System.out.println("Ваша корзина:");
             for (int i = 0; i < cart.length; i++) {
                 if (cart[i] != 0) {
                     System.out.println(products[i] + " " + cart[i] + " шт " + price[i] + " руб/шт " + (cart[i] * price[i]) + " руб в сумме");
                 }
             }
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }
