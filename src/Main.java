@@ -10,7 +10,7 @@ public class Main {
         basket.addToCart(2, 1);
         basket.printCart();
         basket.saveTxt(file);
-        Basket.loadFromTxtFile(file);
-
+        Basket basket1 = Basket.loadFromTxtFile(file);
+        basket1.printCart();
     }
 }

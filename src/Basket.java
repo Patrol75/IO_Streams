@@ -12,10 +12,6 @@ public class Basket {
         cart = new int[price.length];
     }
 
-    public String[] getProducts() {
-        return products;
-    }
-
     public void addToCart(int productNum, int amount) {
         cart[productNum] += amount;
     }
@@ -32,7 +28,7 @@ public class Basket {
     public void saveTxt(File textFile) throws IOException {
         try (PrintWriter out = new PrintWriter(textFile)) {
             for (String e : products) {
-                out.print(e + " ");
+                out.print(e + "_");
             }
             out.println();
             for (int e : price) {
@@ -49,7 +45,7 @@ public class Basket {
         try (FileReader fr = new FileReader(textFile)) {
             BufferedReader reader = new BufferedReader(fr);
             String line = reader.readLine();
-            String[] products = line.split(" ");
+            String[] products = line.split("_");
             line = reader.readLine();
             String[] stringPrice = line.split(" ");
             int[] price = new int[stringPrice.length];
