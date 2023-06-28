@@ -45,6 +45,7 @@ public class Basket {
     }
 
     public static Basket loadFromTxtFile(File textFile) throws IOException {
+        Basket basket;
         try (FileReader fr = new FileReader(textFile)) {
             BufferedReader reader = new BufferedReader(fr);
             String line = reader.readLine();
@@ -61,14 +62,12 @@ public class Basket {
             for (int i = 0; i < stringCart.length; i++) {
                 cart[i] = Integer.parseInt(stringCart[i]);
             }
-            System.out.println("Ваша корзина:");
-            for (int i = 0; i < cart.length; i++) {
-                if (cart[i] != 0) {
-                    System.out.println(products[i] + " " + cart[i] + " шт " + price[i] + " руб/шт " + (cart[i] * price[i]) + " руб в сумме");
-                }
+            basket = new Basket(products, price);
+            for (int i = 0; i < products.length; i++) {
+                basket.addToCart(i, cart[i]);
             }
         }
-        return null;
+        return basket;
     }
 
 }
