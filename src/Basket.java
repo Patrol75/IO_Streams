@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Basket {
+public class Basket implements java.io.Serializable {
 
     private String[] products;
     private int[] price;
@@ -12,12 +12,12 @@ public class Basket {
         cart = new int[price.length];
     }
 
-    public String[] getProducts() {
-        return products;
-    }
-
     public void addToCart(int productNum, int amount) {
         cart[productNum] += amount;
+    }
+
+    public void setCart(int[] cart) {
+        this.cart = cart;
     }
 
     public void printCart() {
@@ -32,28 +32,21 @@ public class Basket {
     public void saveBin(File binFile) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(binFile);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(products);
-            oos.writeObject(price);
-            oos.writeObject(cart);
+            Basket basket = new Basket(products, price);
+            basket.setCart(cart);
+            oos.writeObject(basket);
         }
     }
 
     public static Basket loadFromBinFile(File binFile) throws IOException {
+        Basket basket;
         try (FileInputStream fis = new FileInputStream(binFile);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
-            String[] products = (String[]) ois.readObject();
-            int[] price = (int[]) ois.readObject();
-            int[] cart = (int[]) ois.readObject();
-            System.out.println("Ваша корзина:");
-            for (int i = 0; i < cart.length; i++) {
-                if (cart[i] != 0) {
-                    System.out.println(products[i] + " " + cart[i] + " шт " + price[i] + " руб/шт " + (cart[i] * price[i]) + " руб в сумме");
-                }
-            }
+            basket = (Basket) ois.readObject();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return basket;
     }
 
 }
