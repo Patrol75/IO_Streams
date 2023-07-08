@@ -5,6 +5,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class Basket implements java.io.Serializable {
 
@@ -129,5 +130,10 @@ public class Basket implements java.io.Serializable {
             }
         }
         return basket;
+    }
+
+    @Override
+    public String toString(){
+        return Arrays.toString(products) + " " + Arrays.toString(price) + " " + Arrays.toString(cart);
     }
 }

@@ -27,7 +27,6 @@ public class Main {
         configs.remove(0);
         configs.remove(3);
         configs.remove(6);
-        System.out.println(configs);
         Basket basket;
         if (configs.get(0).equals("true")) {
             switch (configs.get(2)) {
